@@ -4,11 +4,17 @@
 \alias{castaway_convert}
 \title{Castaway CTD to netCDF conversion}
 \usage{
-castaway_convert(files, destination)
+castaway_convert(
+  files,
+  destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD"
+)
 }
 \arguments{
 \item{files}{A character vector of a directory in which castaway CTD CSV
-files are stored}
+files are stored. Must be in "Raw" format from the Castaway CTD Software
+(only variable for \code{Time (Seconds)},    \code{Pressure
+(Decibar)},    \code{Temperature (Celsius)}, and \code{Conductivity
+(MicroSiemens per Centimeter)})}
 
 \item{destination}{an existing folder to save netCDF files to}
 }

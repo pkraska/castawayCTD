@@ -20,7 +20,7 @@
 #' @import lubridate
 #'
 
-castaway_convert <- function(files, destination) {
+castaway_convert <- function(files, destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD") {
   for (i in files) {
     # read data file
     data <- readLines(i) %>%
