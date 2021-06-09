@@ -1,0 +1,20 @@
+Package: castawayCTD
+Type: Package
+Title: Function to convert castaway CTD CSV data into netCDF format for ingestion to ERDDAP
+Version: 0.1.0
+Author: Peter Kraska ,peter.kraska@dfo-mpo.gc.ca.
+Maintainer: Peter Kraska <peter.kraska@dfo-mpo.gc.ca>
+Description: This function will convert castaway CTD CSV data into tibbles and 
+    then from there, into a netCDF compliant file for ingestion into an ERDDAP 
+    Server (either CIOOS/SLGO or internal)
+License: MIT License
+Encoding: UTF-8
+LazyData: true
+Imports:
+    dplyr,
+      tidyr,
+      stringr,
+      readr,
+      ncdf4,
+      lubridate
+RoxygenNote: 7.1.1
