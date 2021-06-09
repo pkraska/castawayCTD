@@ -185,6 +185,6 @@ castaway_convert <- function(files, destination = "R:/Science/CESD/CESD_DataMana
 
     # close the nc file to ensure no data is lost
     nc_close(castaway_nc)
-    message(paste0("netCDF file ", cast_header$value[cast_header$key == "File name"], ".nc created."))
+    message(paste0("netCDF file ", cast_header$value[cast_header$key == "File name"], ".nc created in folder ", destination,"."))
   }
 }
