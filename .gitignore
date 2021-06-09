@@ -2,4 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+<<<<<<< HEAD
 output/
+=======
+castawayCTD.Rproj
+output/
+man/!castaway_convert.R
+>>>>>>> 4134db16a4bb1b1e99fd478ac461a73d7a4eadce
