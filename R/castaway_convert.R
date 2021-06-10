@@ -191,6 +191,13 @@ castaway_convert <-
         
         # close the nc file to ensure no data is lost
         nc_close(castaway_nc)
+        message(paste0(
+          "netCDF file ",
+          cast_header$value[cast_header$key == "File name"],
+          ".nc created in folder ",
+          destination,
+          "."
+        ))
       }
       else {
         if (cast_header$value[cast_header$key == 'Cast data'] == "Processed") {
@@ -335,13 +342,6 @@ castaway_convert <-
             count = c(1, 1, -1)
           )
           
-          # ncvar_put(
-          #   castaway_nc,
-          #   varid = varDepth,
-          #   vals = cast_data$depth_meter,
-          #   count = c(1,1,-1)
-          # )
-          
           ncvar_put(
             castaway_nc,
             varid = varTemperature,
@@ -385,15 +385,14 @@ castaway_convert <-
           )
           # close the nc file to ensure no data is lost
           nc_close(castaway_nc)
+          message(paste0(
+            "netCDF file ",
+            cast_header$value[cast_header$key == "File name"],
+            ".nc created in folder ",
+            destination,
+            "."
+          ))
         }
       }
     }
-    
-    message(paste0(
-      "netCDF file ",
-      cast_header$value[cast_header$key == "File name"],
-      ".nc created in folder ",
-      destination,
-      "."
-    ))
   }
