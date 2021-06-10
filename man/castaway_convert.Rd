@@ -6,7 +6,8 @@
 \usage{
 castaway_convert(
   files,
-  destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD"
+  destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD",
+  level = "raw"
 )
 }
 \arguments{
@@ -17,9 +18,13 @@ files are stored. Must be in "Raw" format from the Castaway CTD Software
 (MicroSiemens per Centimeter)})}
 
 \item{destination}{an existing folder to save netCDF files to}
+
+\item{level}{either \code{raw} or \code{processed} based on the level of
+processing completed using the castaway CTD software}
 }
 \value{
-\code{castaway_convert()} creates netCDF files from castaway CTD CSV files
+\code{castaway_convert()} creates netCDF files from castaway CTD CSV
+  files
 }
 \description{
 Castaway CTD to netCDF conversion
