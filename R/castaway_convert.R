@@ -248,7 +248,7 @@ castaway_convert <-
             longname = "Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level",
             prec = 'double'
           )
-
+          
           varTemperature <- ncvar_def(
             name = 'WC_temp_CTD',
             units = 'degrees C',
@@ -306,14 +306,16 @@ castaway_convert <-
           castaway_nc <-
             nc_create(
               paste0(destination, "/", cast_header$value[cast_header$key == 'File name'], ".nc"),
-              vars = list(varPressure,
-                          # varDepth,
-                          varTemperature,
-                          varConductivity,
-                          varConductance,
-                          varSalinity,
-                          varSound,
-                          varDensity)
+              vars = list(
+                varPressure,
+                # varDepth,
+                varTemperature,
+                varConductivity,
+                varConductance,
+                varSalinity,
+                varSound,
+                varDensity
+              )
             )
           
           # Include all header information in the netCDF file as attribute data
@@ -338,7 +340,7 @@ castaway_convert <-
           #   varid = varDepth,
           #   vals = cast_data$depth_meter,
           #   count = c(1,1,-1)
-          # )     
+          # )
           
           ncvar_put(
             castaway_nc,
@@ -346,7 +348,7 @@ castaway_convert <-
             vals = cast_data$temperature_celsius,
             count = c(1, 1,-1)
           )
-
+          
           ncvar_put(
             castaway_nc,
             varid = varConductivity,
@@ -395,4 +397,3 @@ castaway_convert <-
       "."
     ))
   }
-}
