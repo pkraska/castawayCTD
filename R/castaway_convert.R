@@ -253,7 +253,7 @@ castaway_convert <-
           varLongitude <- ncvar_def(
             name = 'lon',
             units = 'degrees_east',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = "Longitude",
             prec = 'double'
@@ -262,7 +262,7 @@ castaway_convert <-
           varLatitude <- ncvar_def(
             name = 'lat',
             units = 'degrees_north',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = "Latitude",
             prec = 'double'
@@ -271,7 +271,7 @@ castaway_convert <-
           varPressure <- ncvar_def(
             name = 'Pres_Z',
             units = 'dbar',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = "Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level",
             prec = 'double'
@@ -281,7 +281,7 @@ castaway_convert <-
           varTemperature <- ncvar_def(
             name = 'WC_temp_CTD',
             units = 'degrees C',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Temperature of the water body by CTD or STD',
             prec = 'double'
@@ -290,7 +290,7 @@ castaway_convert <-
           varConductivity <- ncvar_def(
             name = 'conductivity',
             units = 'microseimens per cm',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Conductivity (\u00B5S/cm)',
             prec = 'double'
@@ -299,7 +299,7 @@ castaway_convert <-
           varConductance <- ncvar_def(
             name = 'specific conductance',
             units = 'microseimens per cm',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Specific Conductance (\u00B5S/cm)',
             prec = 'double'
@@ -308,7 +308,7 @@ castaway_convert <-
           varSalinity <- ncvar_def(
             name = 'salinity',
             units = 'PSS',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Salinity (PSS)',
             prec = 'double'
@@ -317,7 +317,7 @@ castaway_convert <-
           varSound <- ncvar_def(
             name = 'sound velocity',
             units = 'm/s',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Calculated sound velocity in seawater (m/s)',
             prec = 'double'
@@ -326,7 +326,7 @@ castaway_convert <-
           varDensity <- ncvar_def(
             name = 'density',
             units = 'kg/m^3',
-            dim = list(dimLon, dimLat, dimDepth),
+            dim = list(dimLon, dimLat, dimDepth, dimTime),
             missval = NA,
             longname = 'Calculated Seawater Density (kg/m^3)',
             prec = 'double'
@@ -374,49 +374,49 @@ castaway_convert <-
             castaway_nc,
             varid = varPressure,
             vals = cast_data$pressure_decibar,
-            count = c(1, 1, -1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varTemperature,
             vals = cast_data$temperature_celsius,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varConductivity,
             vals = cast_data$conductivity_microsiemens_per_centimeter,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varConductance,
             vals = cast_data$specific_conductance_microsiemens_per_centimeter,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varSalinity,
             vals = cast_data$salinity_practical_salinity_scale,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varSound,
             vals = cast_data$sound_velocity_meters_per_second,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           
           ncvar_put(
             castaway_nc,
             varid = varDensity,
             vals = cast_data$density_kilograms_per_cubic_meter,
-            count = c(1, 1,-1)
+            count = c(1, 1, -1, 1)
           )
           # close the nc file to ensure no data is lost
           nc_close(castaway_nc)
