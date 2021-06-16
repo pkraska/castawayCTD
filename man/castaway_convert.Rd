@@ -7,20 +7,23 @@
 castaway_convert(
   files,
   destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD",
-  level = "raw"
+  level = "raw",
+  project_lead,
+  project_name
 )
 }
 \arguments{
 \item{files}{A character vector of a directory in which castaway CTD CSV
-files are stored. Must be in "Raw" format from the Castaway CTD Software
-(only variable for \code{Time (Seconds)},    \code{Pressure
-(Decibar)},    \code{Temperature (Celsius)}, and \code{Conductivity
-(MicroSiemens per Centimeter)})}
+files are stored.}
 
 \item{destination}{an existing folder to save netCDF files to}
 
 \item{level}{either \code{raw} or \code{processed} based on the level of
 processing completed using the castaway CTD software}
+
+\item{project_lead}{an optional field to add the project lead's name to the file global attributes}
+
+\item{project_name}{an optional field to add a project name to the file global attributes}
 }
 \value{
 \code{castaway_convert()} creates netCDF files from castaway CTD CSV

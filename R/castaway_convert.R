@@ -1,13 +1,12 @@
 #' Castaway CTD to netCDF conversion
 #'
 #' @param files A character vector of a directory in which castaway CTD CSV
-#'   files are stored. Must be in "Raw" format from the Castaway CTD Software
-#'   (only variable for \code{Time (Seconds)},	\code{Pressure
-#'   (Decibar)},	\code{Temperature (Celsius)}, and \code{Conductivity
-#'   (MicroSiemens per Centimeter)})
+#'   files are stored.
 #' @param destination an existing folder to save netCDF files to
 #' @param level either \code{raw} or \code{processed} based on the level of
 #'   processing completed using the castaway CTD software
+#' @param project_lead an optional field to add the project lead's name to the file global attributes
+#' @param project_name an optional field to add a project name to the file global attributes
 #'
 #' @return \code{castaway_convert()} creates netCDF files from castaway CTD CSV
 #'   files
@@ -26,7 +25,9 @@
 castaway_convert <-
   function(files,
            destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD",
-           level = "raw") {
+           level = "raw",
+           project_lead,
+           project_name) {
     for (i in files) {
       # read data file
       data <- readLines(i) %>%
@@ -102,8 +103,6 @@ castaway_convert <-
             vals = as.numeric(ymd_hms(cast_header$value[cast_header$key == 'Cast time (UTC)']) + cast_data$time_seconds)
           )
         
-        # dimnchar <- ncdim_def("nchar", "", 1:25, create_dimvar = FALSE)
-        
         # Variables
         varLongitude <- ncvar_def(
           name = 'lon',
@@ -168,6 +167,20 @@ castaway_convert <-
           )
         }
         
+        ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'project_name',
+          attval = project_name
+        )
+        
+        ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'project_lead',
+          attval = project_lead
+        )
+        
         ncvar_put(
           castaway_nc,
           varid = varPressure,
@@ -228,6 +241,14 @@ castaway_convert <-
               vals = cast_data$depth_meter
             )
           
+          dimTime <-
+            ncdim_def(
+              name = 'time',
+              units = 'seconds since 1970-01-01',
+              longname = 'Time',
+              vals = as.numeric(ymd_hms(cast_header$value[cast_header$key == 'Cast time (UTC)']))
+            )
+          
           # Variables
           varLongitude <- ncvar_def(
             name = 'lon',
@@ -255,6 +276,7 @@ castaway_convert <-
             longname = "Pressure (spatial coordinate) exerted by the water body by profiling pressure sensor and correction to read zero at sea level",
             prec = 'double'
           )
+
           
           varTemperature <- ncvar_def(
             name = 'WC_temp_CTD',
@@ -335,6 +357,19 @@ castaway_convert <-
             )
           }
           
+          ncatt_put(
+            nc = castaway_nc,
+            varid = 0,
+            attname = 'project_name',
+            attval = project_name
+          )
+          
+          ncatt_put(
+            nc = castaway_nc,
+            varid = 0,
+            attname = 'project_lead',
+            attval = project_lead
+          )
           ncvar_put(
             castaway_nc,
             varid = varPressure,
