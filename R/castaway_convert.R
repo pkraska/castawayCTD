@@ -5,8 +5,24 @@
 #' @param destination an existing folder to save netCDF files to
 #' @param level either \code{raw} or \code{processed} based on the level of
 #'   processing completed using the castaway CTD software
-#' @param project_lead an optional field to add the project lead's name to the file global attributes
-#' @param project_name an optional field to add a project name to the file global attributes
+#' @param project_lead  an optional field to add the project lead's name to the
+#'   file global attributes
+#' @param cf_title  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_institute  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_source  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_history  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_references  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_comment  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param cf_author  an optional field to add to the generated NetCDF file's
+#'   global attributes (required for CF compliant NetCDF file creation)
+#' @param creation_date creation date to append to the global attributes of the
+#'   NetCDF file
 #'
 #' @return \code{castaway_convert()} creates netCDF files from castaway CTD CSV
 #'   files
@@ -20,14 +36,24 @@
 #' @import readr
 #' @import ncdf4
 #' @import lubridate
-#'
+#' 
 
 castaway_convert <-
   function(files,
            destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD",
            level = "raw",
            project_lead,
-           project_name) {
+           cf_title = c(
+             "Maritime Ecosystem and Ocean Science Castaway CTD data archive – Raw / Archives des données CTD des écosystèmes maritimes et des sciences océaniques – Brutes",
+             "Maritime Ecosystem and Ocean Science Castaway CTD data archive – Processed / Archives des données CTD des écosystèmes maritimes et des sciences océaniques – Traitées"
+           ),
+           cf_institute = c("BIO", "SABS"),
+           cf_source = "Castaway CTD data collected as part of Fisheries and Oceans Canada (DFO) science activities in the Maritime region of Canada",
+           cf_history,
+           cf_references,
+           cf_comment,
+           cf_author = "Peter Kraska, CESD Divisional data Manager <Peter.Kraska@DFO-MPO.gc.ca>",
+           creation_date =  format(x = Sys.time(), tz = "GMT", format = "%FT%H:%M%SZ")) {
     for (i in files) {
       # read data file
       data <- readLines(i) %>%
@@ -100,7 +126,9 @@ castaway_convert <-
             name = 'time',
             units = 'seconds since 1970-01-01',
             longname = 'Time',
-            vals = as.numeric(lubridate::ymd_hms(cast_header$value[cast_header$key == 'Cast time (UTC)']) + cast_data$time_seconds)
+            vals = as.numeric(
+              lubridate::ymd_hms(cast_header$value[cast_header$key == 'Cast time (UTC)']) + cast_data$time_seconds
+            )
           )
         
         # Variables
@@ -170,8 +198,8 @@ castaway_convert <-
         ncdf4::ncatt_put(
           nc = castaway_nc,
           varid = 0,
-          attname = 'project_name',
-          attval = project_name
+          attname = 'cf_title',
+          attval = cf_title
         )
         
         ncdf4::ncatt_put(
@@ -192,14 +220,14 @@ castaway_convert <-
           castaway_nc,
           varid = varTemperature,
           vals = cast_data$temperature_celsius,
-          count = c(1, 1,-1)
+          count = c(1, 1, -1)
         )
         
         ncdf4::ncvar_put(
           castaway_nc,
           varid = varConductivity,
           vals = cast_data$conductivity_microsiemens_per_centimeter,
-          count = c(1, 1,-1)
+          count = c(1, 1, -1)
         )
         
         # close the nc file to ensure no data is lost
@@ -363,8 +391,8 @@ castaway_convert <-
           ncdf4::ncatt_put(
             nc = castaway_nc,
             varid = 0,
-            attname = 'project_name',
-            attval = project_name
+            attname = 'cf_title',
+            attval = cf_title
           )
           
           ncdf4::ncatt_put(
@@ -377,49 +405,49 @@ castaway_convert <-
             castaway_nc,
             varid = varPressure,
             vals = cast_data$pressure_decibar,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varTemperature,
             vals = cast_data$temperature_celsius,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varConductivity,
             vals = cast_data$conductivity_microsiemens_per_centimeter,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varConductance,
             vals = cast_data$specific_conductance_microsiemens_per_centimeter,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varSalinity,
             vals = cast_data$salinity_practical_salinity_scale,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varSound,
             vals = cast_data$sound_velocity_meters_per_second,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           
           ncdf4::ncvar_put(
             castaway_nc,
             varid = varDensity,
             vals = cast_data$density_kilograms_per_cubic_meter,
-            count = c(1, 1,-1, 1)
+            count = c(1, 1, -1, 1)
           )
           # close the nc file to ensure no data is lost
           ncdf4::nc_close(castaway_nc)
