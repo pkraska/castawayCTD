@@ -1,7 +1,7 @@
 #' Castaway CTD to netCDF conversion
 #'
-#' @param files A character vector of a directory in which castaway CTD CSV
-#'   files are stored.
+#' @param files A character vector of castaway CTD files in CSV format to
+#'   process
 #' @param destination an existing folder to save netCDF files to
 #' @param level either \code{raw} or \code{processed} based on the level of
 #'   processing completed using the castaway CTD software
@@ -31,6 +31,7 @@
 #' @examples castaway_convert("data/")
 #'
 #' @import dplyr
+#' @import magrittr
 #' @import tidyr
 #' @import stringr
 #' @import readr
@@ -42,16 +43,16 @@ castaway_convert <-
   function(files,
            destination = "R:/Science/CESD/CESD_DataManagement/data_out/castawayCTD",
            level = "raw",
-           project_lead,
+           project_lead = "",
            cf_title = c(
              "Maritime Ecosystem and Ocean Science Castaway CTD data archive – Raw / Archives des données CTD des écosystèmes maritimes et des sciences océaniques – Brutes",
              "Maritime Ecosystem and Ocean Science Castaway CTD data archive – Processed / Archives des données CTD des écosystèmes maritimes et des sciences océaniques – Traitées"
            ),
            cf_institute = c("BIO", "SABS"),
            cf_source = "Castaway CTD data collected as part of Fisheries and Oceans Canada (DFO) science activities in the Maritime region of Canada",
-           cf_history,
-           cf_references,
-           cf_comment,
+           cf_history = "",
+           cf_references = "",
+           cf_comment = "",
            cf_author = "Peter Kraska, CESD Divisional data Manager <Peter.Kraska@DFO-MPO.gc.ca>",
            creation_date =  format(x = Sys.time(), tz = "GMT", format = "%FT%H:%M%SZ")) {
     for (i in files) {
@@ -198,6 +199,13 @@ castaway_convert <-
         ncdf4::ncatt_put(
           nc = castaway_nc,
           varid = 0,
+          attname = 'project_lead',
+          attval = project_lead
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
           attname = 'cf_title',
           attval = cf_title
         )
@@ -205,8 +213,50 @@ castaway_convert <-
         ncdf4::ncatt_put(
           nc = castaway_nc,
           varid = 0,
-          attname = 'project_lead',
-          attval = project_lead
+          attname = 'cf_institute',
+          attval = cf_institute
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'cf_source',
+          attval = cf_source
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'cf_history',
+          attval = cf_history
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'cf_references',
+          attval = cf_references
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'cf_comment',
+          attval = cf_comment
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'cf_author',
+          attval = cf_author
+        )
+        
+        ncdf4::ncatt_put(
+          nc = castaway_nc,
+          varid = 0,
+          attname = 'creation_date',
+          attval = creation_date
         )
         
         ncdf4::ncvar_put(
